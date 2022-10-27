@@ -1,6 +1,6 @@
 #!/bin/bash
 #Change BUILD and INSTALL DIRS, or use defaults
-DIR_SUFFIX=downloadtest
+DIR_SUFFIX=dealii
 BUILD_DIR=$HOME/build/${DIR_SUFFIX}
 INSTALL_DIR=$HOME/opt/${DIR_SUFFIX}
 cmake \
