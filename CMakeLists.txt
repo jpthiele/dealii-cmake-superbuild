@@ -42,12 +42,12 @@ list(APPEND INSTALL_TPLS "hdf5")
 
 ##GEOMETRY/CAD PACKAGES
 list(APPEND INSTALL_TPLS "opencascade")
-list(APPEND INSTALL_TPLS "gmsh") #
-list(APPEND INSTALL_TPLS "assimp") # 
+# list(APPEND INSTALL_TPLS "gmsh") 
+# list(APPEND INSTALL_TPLS "assimp") 
 
 ##Parallel Tools
 list(APPEND INSTALL_TPLS "p4est")
-list(APPEND INSTALL_TPLS "parmetis") #
+list(APPEND INSTALL_TPLS "parmetis") 
  
 ##BLAS/LAPACK/ScaLAPACK Stack gets auto determined 
 list(APPEND INSTALL_TPLS "some_blas") #See README.md for further details
@@ -55,14 +55,14 @@ list(APPEND INSTALL_TPLS "some_blas") #See README.md for further details
 ##Solvers/Linear Algebra
 list(APPEND INSTALL_TPLS "superlu_dist") 
 list(APPEND INSTALL_TPLS "mumps")
-list(APPEND INSTALL_TPLS "ginkgo") #
+# list(APPEND INSTALL_TPLS "ginkgo") 
 # ##Parallel LA Packages
-# list(APPEND INSTALL_TPLS "trilinos")
+list(APPEND INSTALL_TPLS "trilinos")
 
 ##Advanced Maths packages
-list(APPEND INSTALL_TPLS "adolc") #
-list(APPEND INSTALL_TPLS "arpack") #
-list(APPEND INSTALL_TPLS "sundials") # 
+# list(APPEND INSTALL_TPLS "adolc") 
+# list(APPEND INSTALL_TPLS "arpack") 
+# list(APPEND INSTALL_TPLS "sundials")  
 list(APPEND INSTALL_TPLS "symengine")
 
 ################################################################################
@@ -87,6 +87,8 @@ build_packages()
 ###################################################################################
 ## DEALII ITSELF                                                                 ##
 ###################################################################################
+# build_dealii(VERSION 9.3.2)
+# build_dealii(VERSION 9.3.3)
 build_dealii(VERSION 9.4.0)
 
 print_config_summary()
