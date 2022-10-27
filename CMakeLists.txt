@@ -36,7 +36,7 @@ set(DEFAULT_BUILD_COMMAND cmake --build . --config release -j ${NUM_BUILD_JOBS})
 ## USER SPECIFIED THIRD PARTY LIBRARIES                                       ##
 ################################################################################
 #Only download and extract (needed for cluster machines w.o. web access)
-set(DOWNLOAD_ONLY TRUE) 
+set(DOWNLOAD_ONLY FALSE) 
 set(INSTALL_TPLS "") #For safety reset this variable
 list(APPEND INSTALL_TPLS "hdf5")
 
