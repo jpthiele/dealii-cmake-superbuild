@@ -1,0 +1,6 @@
+macro(setup_subproject_path_vars _NAME)
+  set(SUBPROJECT_NAME ${_NAME})
+  set(SUBPROJECT_SOURCE_PATH ${SUBPROJECT_NAME}/source)
+  set(SUBPROJECT_STAMP_PATH ${SUBPROJECT_NAME}/stamp)
+  set(SUBPROJECT_BUILD_PATH ${SUBPROJECT_NAME}/build)
+endmacro()

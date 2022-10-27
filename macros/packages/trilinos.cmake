@@ -1,0 +1,71 @@
+macro(build_trilinos)
+  set(oneValueArgs VERSION)
+  cmake_parse_arguments(BUILD_TRILINOS "" "${oneValueArgs}" "" ${ARGN})
+  
+  if (NOT BUILD_TRILINOS_VERSION)
+    set(BUILD_TRILINOS_VERSION "12.18.1")
+  endif()
+    
+  string(REPLACE "." "-" TMPVER ${BUILD_TRILINOS_VERSION})
+  
+  string(CONCAT BUILD_TRILINOS_REPO "https://github.com/trilinos/" "Trilinos.git")
+  string(CONCAT BUILD_TRILINOS_TAG "trilinos-release-" ${TMPVER})
+  unset(TMPVER)
+  
+  set(BUILD_TRILINOS_C_FLAGS "-g -fPIC -O3")
+  set(BUILD_TRILINOS_CXX_FLAGS "-g -fPIC -O3")
+  set(BUILD_TRILINOS_F_FLAGS "-g -O3 -fallow-argument-mismatch")
+  
+  build_cmake_git_subproject(
+    NAME Trilinos
+    VERSION ${BUILD_TRILINOS_VERSION}
+    GIT_REPO ${BUILD_TRILINOS_REPO}
+    GIT_TAG ${BUILD_TRILINOS_TAG}
+    DOWNLOAD_ONLY ${DOWNLOAD_ONLY}
+    BUILD_ARGS
+      -D TPL_ENABLE_ParMETIS:BOOL=ON
+      -D TPL_ParMETIS_LIBRARIES:FILEPATH=${ParMETIS_LIB};${METIS_LIB}
+      -D TPL_ParMETIS_INCLUDE_DIRS:PATH=${ParMETIS_INCLUDES}
+      -D TPL_BLAS_LIBRARIES:STRING=${BLAS_LIBS}
+      -D TPL_LAPACK_LIBRARIES:STRING=${LAPACK_LIBS}
+      -D TPL_ENABLE_MPI:BOOL=ON 
+      -D Trilinos_ENABLE_OpenMP:BOOL=OFF 
+      -D TPL_ENABLE_TBB:BOOL=OFF
+      -D Trilinos_VERBOSE_CONFIGURE:BOOL=OFF
+      -D Trilinos_ENABLE_Amesos:BOOL=ON 
+      -D Trilinos_ENABLE_Epetra:BOOL=ON 
+      -D Trilinos_ENABLE_EpetraExt:BOOL=ON 
+      -D Trilinos_ENABLE_Ifpack:BOOL=ON 
+      -D Trilinos_ENABLE_Ifpack2:BOOL=OFF 
+      -D Trilinos_ENABLE_Tpetra:BOOL=ON 
+      -D   Tpetra_INST_INT_LONG:BOOL=ON 
+      -D Trilinos_ENABLE_AztecOO:BOOL=ON 
+      -D Trilinos_ENABLE_Sacado:BOOL=ON 
+      -D Trilinos_ENABLE_Teuchos:BOOL=ON 
+      -D   Teuchos_ENABLE_FLOAT:BOOL=ON 
+      -D Trilinos_ENABLE_MueLu:BOOL=ON 
+      -D Trilinos_ENABLE_ML:BOOL=ON 
+      -D Trilinos_ENABLE_ROL:BOOL=ON 
+      -D Trilinos_ENABLE_Zoltan:BOOL=ON 
+      -D Trilinos_ENABLE_Stratimikos:BOOL=ON 
+      -D TPL_ENABLE_Boost:BOOL=OFF 
+      -D Trilinos_ENABLE_Belos:BOOL=ON 
+      -D Trilinos_ENABLE_Amesos2:BOOL=ON 
+      -D CMAKE_BUILD_TYPE:STRING=RELEASE 
+      -D CMAKE_VERBOSE_MAKEFILE:BOOL=OFF 
+      -D BUILD_SHARED_LIBS:BOOL=ON 
+      -D CMAKE_Fortran_COMPILER=${CMAKE_MPI_FC_COMPILER}
+      -D CMAKE_C_COMPILER=${CMAKE_MPI_C_COMPILER}
+      -D CMAKE_CXX_COMPILER=${CMAKE_MPI_CXX_COMPILER}
+      -D CMAKE_C_FLAGS:STRING=${BUILD_TRILINOS_C_FLAGS}
+      -D CMAKE_CXX_FLAGS:STRING=${BUILD_TRILINOS_C_FLAGS}
+      -D CMAKE_Fortran_FLAGS:STRING=${BUILD_TRILINOS_F_FLAGS}
+      -D CMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+      ${TRILINOS_CONFOPTS}
+    DEPENDS_ON ${BLAS_PROJECT_NAME} ${TRILINOS_DEPENDENCIES} ParMETIS
+  )
+  
+  list(APPEND DEALII_DEPENDENCIES "Trilinos")
+  list(APPEND DEALII_CONFOPTS "-D DEAL_II_WITH_TRILINOS:BOOL=ON ")
+  list(APPEND DEALII_CONFOPTS "-D TRILINOS_DIR=${Trilinos_DIR}")
+endmacro()
