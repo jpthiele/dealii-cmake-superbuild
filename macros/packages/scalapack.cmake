@@ -3,7 +3,6 @@ macro(build_scalapack)
   set(oneValueArgs VERSION)
   cmake_parse_arguments(BUILD_SCALAPACK "" "${oneValueArgs}" "" ${ARGN})
 
-  set(BUILD_SCALAPACK_MD5 "")
   if(${INSTALL_reference_scalapack})
     if( NOT BUILD_SCALAPACK_VERSION )
       set(BUILD_SCALAPACK_VERSION "2.1.0")
@@ -39,7 +38,7 @@ macro(build_scalapack)
   set(BLACS_DIR=${ScaLAPACK_DIR}/lib)
   
   list(APPEND DEALII_CONFOPTS "-D DEAL_II_WITH_SCALAPACK:BOOL=ON")
-  list(APPEND DEALII_CONFOPTS "-D SCALAPACK_DIR =${ScaLAPACK_DIR}")
+  list(APPEND DEALII_CONFOPTS "-D SCALAPACK_DIR=${ScaLAPACK_DIR}")
 
   list(APPEND TRILINOS_DEPENDENCIES "ScaLAPACK")
   list(APPEND TRILINOS_CONFOPTS "-D TPL_ENABLE_SCALAPACK:BOOL=ON")
