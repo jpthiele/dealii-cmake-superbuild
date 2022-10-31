@@ -1,6 +1,6 @@
 macro(build_dealii)
   cmake_policy(SET CMP0074 NEW) #use _ROOT in find package!
-  set(oneValueArgs VERSION)
+  set(oneValueArgs VERSION MAIN)
   cmake_parse_arguments(BUILD_DEALII "" "${oneValueArgs}" "" ${ARGN})
   
   if (NOT BUILD_DEALII_VERSION)
@@ -54,6 +54,12 @@ macro(build_dealii)
       -D CMAKE_POLICY_DEFAULT_CMP0074:STRING=NEW
       ${DEALII_CONFOPTS}
   )
-
-  list(APPEND DEALII_VERSIONS ${BUILD_DEALII_VERSION})
+  if(BUILD_DEALII_MAIN)
+    set(MAIN_DEAL_II dealii-${BUILD_DEALII_VERSION})
+    set(MAIN_DEAL_II_DIR ${${MAIN_DEAL_II}_DIR})
+    list(APPEND DEALII_VERSIONS "${BUILD_DEALII_VERSION}*")
+  else()
+    list(APPEND DEALII_VERSIONS ${BUILD_DEALII_VERSION})
+  endif()
+  
 endmacro()

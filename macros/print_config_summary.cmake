@@ -62,18 +62,25 @@ macro(print_config_summary)
 ################################################################################
 ## OUTPUT DEAL_II VERSIONS                                                    ##
 ################################################################################
-  message("deal.II will be installed in the following versions")
+  message("deal.II will be installed in the following versions (*main version)")
   foreach(arg ${DEALII_VERSIONS})
     message("\t- ${arg}")
   endforeach()
+  
+################################################################################
+## APPLICATIONS                                                               ##
+################################################################################
+  message("\nThe following applications have been chosen for installation")
+  if(${INSTALL_aspect})
+    message("\tASPECT version ${BUILD_ASPECT_VERSION}")
+  endif()
   message(" ")
 
 ################################################################################
 ## FURTHER INFO                                                               ##
 ################################################################################
   message("If you are happy with this configuration call")
-  message("\tcmake --build ${CMAKE_BINARY_DIR}")
-  message(" ")
+  message("\tcmake --build ${CMAKE_BINARY_DIR}\n")
 
 
 

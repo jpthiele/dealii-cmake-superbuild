@@ -18,6 +18,23 @@ if(NOT CMAKE_INSTALL_PREFIX)
       "${CMAKE_BINARY_DIR}/install"
       CACHE STRING "Final install location." FORCE)
 endif()
+
+if(NOT DEFINED MPI_C_COMPILER OR NOT DEFINED MPI_CXX_COMPILER OR NOT DEFINED MPI_Fortran_COMPILER)
+  message("No specific MPI Compiler defined, searching the system")
+  find_package(MPI)
+  if(MPI_FOUND)
+    message("MPI found with the following compilers")
+    set(CMAKE_MPI_C_COMPILER ${MPI_C_COMPILER})
+    set(CMAKE_MPI_CXX_COMPILER ${MPI_CXX_COMPILER})
+    set(CMAKE_MPI_Fortran_COMPILER ${MPI_Fortran_COMPILER})
+    print(CMAKE_MPI_C_COMPILER)
+    print(CMAKE_MPI_CXX_COMPILER)
+    print(CMAKE_MPI_Fortran_COMPILER)
+  else()
+    message(WARNING "MPI not found, please specify compilers!")
+    return()
+  endif()
+endif()
 # If NUM_BUILD_JOBS not specified grab number of processors on machine
 # and leave 2 for tasks other than building. 
 # If this slows your machine too much try even fewer.
@@ -33,11 +50,12 @@ set(NUM_BUILD_JOBS ${PROCESSOR_COUNT} CACHE STRING
 set(DEFAULT_BUILD_COMMAND cmake --build . --config release -j ${NUM_BUILD_JOBS})
 
 ################################################################################
-## USER SPECIFIED THIRD PARTY LIBRARIES                                       ##
+## USER SPECIFIED THIRD PARTY LIBRARIES AND APPLICATIONS                      ##
 ################################################################################
 #Only download and extract (needed for cluster machines w.o. web access)
 set(DOWNLOAD_ONLY FALSE) 
 set(INSTALL_TPLS "") #For safety reset this variable
+set(INSTALL_APPS "") #For safety reset this variable
 list(APPEND INSTALL_TPLS "hdf5")
 
 ##GEOMETRY/CAD PACKAGES
@@ -65,6 +83,8 @@ list(APPEND INSTALL_TPLS "trilinos")
 # list(APPEND INSTALL_TPLS "sundials")  
 list(APPEND INSTALL_TPLS "symengine")
 
+##Applications using deal.II
+# list(APPEND INSTALL_APPS "aspect")
 ################################################################################
 ## ROUTINES FOR CHECKING AND BUILDING DEPENDENCIES OF DEAL_II                 ##
 ################################################################################
@@ -87,10 +107,15 @@ build_packages()
 ###################################################################################
 ## DEALII ITSELF                                                                 ##
 ###################################################################################
+build_dealii(VERSION 9.4.0 MAIN TRUE)
 # build_dealii(VERSION 9.3.2)
 # build_dealii(VERSION 9.3.3)
-build_dealii(VERSION 9.4.0)
 
+
+###################################################################################
+## APPLICATIONS AND SUMMARY                                                      ##  
+###################################################################################
+build_applications()
 print_config_summary()
 
 

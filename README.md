@@ -8,11 +8,27 @@ For the impatient
 
 1) clone this repository and change directory into cmake-dealii-superbuild
 2) Edit the following sections of CMakeLists.txt 
-    * 'user specified TPL': comment in/out the corresponding lines for wanted/unwanted TPLs
+    * 'user specified TPLs and apps': comment in/out the corresponding lines for wanted/unwanted TPLs and apps
     * 'dealii itself': Subsequent calls of `build_dealii(VERSION X.Y.Z)` build different versions side-by-side
 3) call `cmake -S. -B<build_dir> -D CMAKE_INSTALL_PREFIX=<install_dir>` 
 4) Check the output and see if all wanted packages are installed 
 5) If yes call `cmake --build <build_dir>`
+
+If the found compilers are not sufficient or not the ones you intend to use you can specify them with 
+
+`-D CMAKE_C_COMPILER=<name/path of C compiler>`
+
+`-D CMAKE_CXX_COMPILER=<name/path of C++ compiler>`
+
+`-D CMAKE_Fortran_COMPILER=<name/path of Fortran compiler>`
+
+The same goes for the MPI compilers which can be set via
+
+`-D CMAKE_MPI_C_COMPILER=<name/path of MPI C compiler>`
+
+`-D CMAKE_MPI_CXX_COMPILER=<name/path of MPI C++ compiler>`
+
+`-D CMAKE_MPI_Fortran_COMPILER=<name/path of MPI Fortran compiler>`
 
 If you have a sufficient preinstalled version of Boost you can also specify `-D BOOST_DIR=<path_to_boost>` 
 and it will be handed to deal.II, otherwise the bundled version will be installed.
@@ -45,9 +61,9 @@ By default if will set the following
 
 These settings can of course be changed and then the configure stage can be run from the config subdirectory by `./do_configure_cmake.sh`
 
-I want to use different versions of one or more packages, is this possible?
+I want to use different versions of one or more packages or applications, is this possible?
 ---------------------------------------------------------------------------
-Yes this is possible by editing the `build_packages` macro and changing
+Yes this is possible by editing the `build_packages` or `build_applications` macro and changing
 the corresponding call from `build_<pkgname>()` to `build_<pkgname>(VERSION X.Y.Z)`.
 However, installation was only tested with the default package versions so 
 configuration options might change and in the worst case compatibility will break.
