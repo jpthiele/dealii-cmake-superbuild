@@ -1,5 +1,11 @@
 macro(set_packages_and_dependencies)
-
+  #Set some installs to false by default to make sure all ifs are correct
+  set(INSTALL_amd_blis FALSE) 
+  set(INSTALL_mumps FALSE) 
+  set(INSTALL_openblas FALSE) 
+  set(INSTALL_superlu_dist FALSE) 
+  set(INSTALL_trilinos FALSE) 
+  
   #set INSTALL_<package_name> to TRUE
   foreach(arg ${INSTALL_TPLS})
     set(INSTALL_${arg} TRUE)
